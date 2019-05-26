@@ -1,12 +1,70 @@
 import React, { Component } from 'react';
-import Post from './Post';
+import User from './User';
+import ErrorMessage from './ErrorMessage';
+import InstaService from '../services/instaservice';
 
 export default class Posts extends Component {
+    InstaService = new InstaService();
+
+    state = {
+        posts: [],
+        error: false,
+    }
+
+    componentDidMount() {
+        this.updatePosts();
+    }
+
+    updatePosts() {
+        this.InstaService.getAllPost()
+        .then(this.onPostsLoaded)
+        .catch(this.onError)
+    }
+
+    onPostsLoaded = (posts) => {
+        this.setState({
+            posts
+        })
+    }
+
+    onError = (err) => {
+        this.setState({
+            error: true
+        })
+    }
+
+    renderItems(arr) {
+
+        return arr.map((item) => {
+            
+            const {name, altname, photo, src, alt, descr, id} = item;
+            
+
+            return (
+                <div key={id} className="post">
+                    <User src={photo} alt={altname} name={name} min />
+                    <img alt={alt} src={src}></img>
+                    <div className="post__name">
+                        {name}
+                    </div>
+                    <div className="post__descr">
+                        {descr}
+                    </div>
+                </div>
+            )
+        })
+    }
+
     render() {
+        const {error, posts} = this.state;
+        if (error) {
+            return <ErrorMessage />
+        }
+        const items = this.renderItems(posts);
+
         return (
             <div className="left">
-                <Post src="http://www.youandthemat.com/wp-content/uploads/nature-2-26-17.jpg" alt="nature"/>
-                <Post src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Bachalpsee_reflection.jpg/250px-Bachalpsee_reflection.jpg" alt="nature"/>
+                {items}
             </div>
         )
     }
