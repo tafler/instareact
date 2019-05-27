@@ -63,7 +63,7 @@ export default class Posts extends Component {
         const items = this.renderItems(posts);
 
         return (
-            <div className="left">
+            <div className="post">
                 {items}
             </div>
         )
