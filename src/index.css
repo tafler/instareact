@@ -167,3 +167,10 @@ header {
     height: 300px;
     object-fit: cover;
 }
+
+.centered {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

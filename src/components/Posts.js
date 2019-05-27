@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import User from './User';
 import ErrorMessage from './ErrorMessage';
 import InstaService from '../services/instaservice';
-
+import loader from '../loader.svg';
 export default class Posts extends Component {
     InstaService = new InstaService();
 
     state = {
         posts: [],
         error: false,
+        loading: true,
     }
 
     componentDidMount() {
@@ -23,18 +24,27 @@ export default class Posts extends Component {
 
     onPostsLoaded = (posts) => {
         this.setState({
-            posts
+            posts,
+            loading: false,
         })
     }
 
     onError = (err) => {
         this.setState({
-            error: true
+            error: true,
+            loading: false,
         })
     }
 
     renderItems(arr) {
 
+        if(this.state.loading) {
+            return (
+                <div className="centered">
+                    <img src={loader}></img>
+                </div>
+            )
+        }
         return arr.map((item) => {
             
             const {name, altname, photo, src, alt, descr, id} = item;

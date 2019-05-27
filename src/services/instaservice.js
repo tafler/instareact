@@ -9,8 +9,8 @@ export default class InstaService {
         if (!res.ok) {
             throw new Error(`Could not fetch ${url}, recived ${res.status}`);
         }
-
         return res.json();
+
     }
 
     getAllPost = async () => {
